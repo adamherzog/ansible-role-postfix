@@ -1,0 +1,19 @@
+---
+- name: install postfix package
+  yum:
+    name: postfix
+    state: installed
+
+- name: limit postfix to ipv4
+  lineinfile:
+    dest: /etc/postfix/main.cf
+    regexp: ^inet_protocols =
+    line: inet_protocols = ipv4
+  notify:
+    - restart postfix
+
+- name: start and enable postfix service
+  service:
+    name: postfix
+    state: started
+    enabled: yes
